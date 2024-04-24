@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """function that calls wait_random n times"""
+
+import asyncio
 from typing import List
+import random
+
 
 wait_random = __import__("0-basic_async_syntax").wait_random
 
