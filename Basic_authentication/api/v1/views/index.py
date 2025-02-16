@@ -31,4 +31,4 @@ def unauthorized_route() -> None:
     """GET /api/v1/unauthorized
     Trigger a 401 Unauthorized error
     """
-    abort(401)  # The abort(401) function raises a 401 Unauthorized error, which will be handled by the error handler which is just added in app.py
+    abort(401)  # The abort(401) function raises a 401 Unauthorized error
