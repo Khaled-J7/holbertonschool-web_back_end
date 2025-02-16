@@ -33,6 +33,7 @@ def unauthorized_route() -> None:
     """
     abort(401)  # The abort(401) function raises a 401 Unauthorized error
 
+
 @app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden_route() -> None:
     """
