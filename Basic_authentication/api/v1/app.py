@@ -49,7 +49,7 @@ def before_request():
     excluded_paths = ['/api/v1/status/',
                       '/api/v1/unauthorized/', '/api/v1/forbidden/']
 
-    # Skip Validation for excluded paths
+    # Skip validation for excluded paths
     if auth.require_auth(request.path, excluded_paths):
         # Check if the Authorization header is missing
         if auth.authorization_header(request) is None:
