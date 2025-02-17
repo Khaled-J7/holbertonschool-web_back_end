@@ -45,7 +45,16 @@ class Auth:
         Returns:
             str: None (for now)
         """
-        return None
+        # Return None if request is None
+        if request is None:
+            return None
+
+        # Check if the 'Authorization' header exists
+        if 'Authorization' not in request.headers:
+            return None
+
+        # Return the value of the 'Authorization' header
+        return request.header.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ Get the current user from the request
