@@ -54,37 +54,20 @@ class BasicAuth(Auth):
     def user_object_from_credentials(
         self, user_email: str, user_pwd: str
     ) -> TypeVar("User"):
-        """Retrieve a User instance based on email and password
-        Args:
-            user_email (str): The user's email
-            user_pwd (str): The user's password
-        Returns:
-            User: The matching User instance, or None
-        """
-        # Return None if user_email is None or not a string
+        """Retrieve a User instance based on email and password"""
         if user_email is None or not isinstance(user_email, str):
             return None
-
-        # Return None if user_pwd is None or not a string
         if user_pwd is None or not isinstance(user_pwd, str):
             return None
-
-        # Search for users with the given email
         try:
             users = User.search({"email": user_email})
         except Exception:
             return None
-
-        # Return None if no user is found
         if not users:
             return None
-
-        # Validate the password for the first matching user
         user = users[0]
         if not user.is_valid_password(user_pwd):
             return None
-
-        # Return the matching User instance
         return user
 
     def current_user(self, request=None) -> TypeVar("User"):
@@ -94,7 +77,7 @@ class BasicAuth(Auth):
         Returns:
             User: The authenticated User instance, or None
         """
-        # Step 1: Extract the Authorization Header
+        # Step 1: Extract the Authorization header
         auth_header = self.authorization_header(request)
         if not auth_header:
             return None
