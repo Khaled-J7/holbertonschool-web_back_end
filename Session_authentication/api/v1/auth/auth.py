@@ -1,66 +1,56 @@
 #!/usr/bin/env python3
-""" Auth class for API authentication
+""" Module of Authentication
 """
 from flask import request
 from typing import List, TypeVar
+import os
 
 
 class Auth:
-    """ Template for all authentication systems """
+    """ Class to manage the API authentication """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ Check if authentication is required for a given path
-        Args:
-            path (str): The requested path
-            excluded_paths (List[str]): Paths that don't require authentication
-        Returns:
-            bool: True if authentication is required, False otherwise
         """
-        # Return True if path is None
-        if path is None:
+        Public method to determine if a given path requires authentication.
+        """
+        if path is None or excluded_paths is None or not len(excluded_paths):
             return True
-
-        # Return True if excluded_paths is None or empty
-        if excluded_paths is None or len(excluded_paths) == 0:
-            return True
-
-        # Ensure path ends with a '/' for slash tolerance
-        if not path.endswith('/'):
+            # Add slash to all cases for consistency
+        if path[-1] != '/':
             path += '/'
-
-        # Check if path is in excluded_paths
-        for excluded_path in excluded_paths:
-            if not excluded_path.endswith('/'):
-                excluded_path += '/'
-            if path == excluded_path:
-                return False
-
-        # If no match found, return True
+        if excluded_paths[-1] != '/':
+            excluded_paths += '/'
+        if path in excluded_paths:
+            return False
         return True
 
     def authorization_header(self, request=None) -> str:
-        """ Get the authorization header from the request
-        Args:
-            request (flask.Request): The Flask request object
-        Returns:
-            str: None (for now)
         """
-        # Return None if request is None
+        Public method to get the authorization header from the request.
+        """
         if request is None:
             return None
-
-        # Check if the 'Authorization' header exists
         if 'Authorization' not in request.headers:
             return None
-
-        # Return the value of the 'Authorization' header
-        return request.header.get('Authorization')
+        return request.headers['Authorization']
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ Get the current user from the request
-        Args:
-            request (flask.Request): The Flask request object
-        Returns:
-            TypeVar('User'): None (for now)
         """
+               Public method to get the current user from the request.
+
+               Args:
+                   request (Flask request object, optional):
+                   The request object. Defaults to None.
+
+               Returns:
+                   TypeVar('User'): None for now,
+                   as the logic will be implemented later.
+               """
         return None
+
+    def session_cookie(self, request=None):
+        '''self descriptive'''
+        if not request:
+            return None
+        session_name = os.getenv("SESSION_NAME")
+        return request.cookies.get(session_name)
