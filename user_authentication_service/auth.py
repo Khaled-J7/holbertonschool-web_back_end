@@ -1,61 +1,50 @@
 #!/usr/bin/env python3
-"""Hash password"""
-
-import bcrypt
+"""auth module
+"""
 from db import DB
 from user import User
+import bcrypt
 from sqlalchemy.orm.exc import NoResultFound
-import uuid
+from uuid import uuid4
 
 
-def _hash_password(password: str) -> bytes:
-    """_hash_password function that that takes in
-    a password string arguments and returns bytes"""
-    pw_bytes = password.encode("utf-8")
+def _hash_password(password: str) -> str:
+    """hash password using bcrypt"""
+    bytes = password.encode("utf-8")
     salt = bcrypt.gensalt()
-    return bcrypt.hashpw(pw_bytes, salt)
+    hash = bcrypt.hashpw(bytes, salt)
+
+    return hash
 
 
-def _generate_uuid() -> str:
-    """_generate_uuid method that return a
-    string representation of a new UUID."""
-    return str(uuid.uuid4())
+def _generate_uuid():
+    """Generate UUIDs"""
+    uu_id = uuid4()
+    return uu_id
 
 
 class Auth:
     """Auth class to interact with the authentication database."""
 
     def __init__(self):
-        """__init__ method"""
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """register_user method that register a new user"""
+        """Registers and returns a new user if email isn't listed"""
         try:
             user = self._db.find_user_by(email=email)
-            if user:
-                raise ValueError(f"User {email} already exists.")
         except NoResultFound:
-            hashed_pwd = _hash_password(password)
-            user = self._db.add_user(email, password)
+            hashed_password = _hash_password(password)
+            user = self._db.add_user(email, hashed_password)
             return user
+        else:
+            raise ValueError(f"User {email} already exists")
 
     def valid_login(self, email: str, password: str) -> bool:
-        """valid_login method"""
+        """If password is valid returns true, else, false"""
         try:
             user = self._db.find_user_by(email=email)
-            pw_bytes = password.encode("utf-8")
-            match = bcrypt.checkpw(pw_bytes, _hash_password(user.hashed_password))
-            return match
+            return bcrypt.checkpw(password.encode("utf-8"), user.hashed_password)
+
         except NoResultFound:
             return False
-
-    def create_session(self, email: str) -> str:
-        """create_session method that"""
-        try:
-            user = self._db.find_user_by(email=email)
-            session_id = _generate_uuid()
-            self._db.update_user(user.id, session_id=session_id)
-            return session_id
-        except NoResultFound:
-            return None
