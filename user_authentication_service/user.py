@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
-"""
-User model for authentication service.
-"""
+"""User model"""
 
-from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
 
 class User(Base):
-    """
-    User model representing a user in the authentication system.
-    """
+    """User class"""
 
     __tablename__ = "users"
 
