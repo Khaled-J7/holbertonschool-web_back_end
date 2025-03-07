@@ -51,3 +51,23 @@ class TestGetJson(unittest.TestCase):
             mock_response = Mock()
             mock_response.json.return_value = test_payload
             mock_get.return_value = mock_response
+
+
+class TestMemoize(TestCase):
+    """Class for testing memoize"""
+
+    def test_memoize(self):
+        """Test memoize"""
+
+        class TestClass:
+            """test class"""
+
+            def a_method(self):
+                """returns 42"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """returns memoized"""
+                return self.a_method()
+
