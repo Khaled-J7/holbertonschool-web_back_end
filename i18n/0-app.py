@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Basic Flask app
+Basic Flask app that renders a template with a welcome message.
 """
 
 from flask import Flask, render_template
@@ -8,9 +8,10 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
-@app.route("/")  # type: ignore
+@app.route("/")
 def index():
-    render_template("index.html")
+    """Render the index template."""
+    return render_template("0-index.html")
 
 
 if __name__ == "__main__":
