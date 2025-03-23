@@ -8,7 +8,7 @@
 * **What is and how to implement views in MySQ**
 * **What is and how to implement triggers in MySQ**
 
-Requirements
+## Requirements
 
 * **All your files will be executed on Ubuntu 20.04 LTS using MySQL 8.0**
 * **All your files should end with a new line**
@@ -18,7 +18,7 @@ Requirements
 * **A README.md file, at the root of the folder of the project, is mandatory**
 * **The length of your files will be tested using wc**
 
-### How to import a SQL dump
+## How to import a SQL dump
 
 ```sql
 $ echo "CREATE DATABASE hbtn_0d_tvshows;" | mysql -uroot -p
